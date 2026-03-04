@@ -1,0 +1,30 @@
+# 3D Slicer installation (large binary, not part of source)
+Slicer-*/
+
+# Project data (screenshots, volumes, outputs — not tracked)
+data/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
+*~
+
+# IDE
+.vscode/
+*.swp
+*.swo
+
+# Generated database (rebuilt from index.json)
+tools/tools.db

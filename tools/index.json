@@ -1,0 +1,56 @@
+{
+  "version": "1.0",
+  "description": "Machine-readable index of all verified tools in this library. Agents: load this file first, find relevant tools by category/tags, then fetch only the specific script needed.",
+  "tools": [
+    {
+      "id": "scene/list-mrml-nodes",
+      "file": "scene/list-mrml-nodes.py",
+      "category": "scene",
+      "description": "List all MRML nodes in the current scene with index, class, and name",
+      "tags": ["mrml", "nodes", "scene", "list", "inspect", "debug", "vtkMRMLNode"],
+      "usage": "Run inside Slicer Python environment; optionally pass a save_path to write output to disk",
+      "slicer_version": "5.10+",
+      "verified": "2026-03-04"
+    },
+    {
+      "id": "volumes/load-sample-mrhead",
+      "file": "volumes/load-sample-mrhead.py",
+      "category": "volumes",
+      "description": "Download and load the MRHead sample volume from Slicer's built-in SampleData module",
+      "tags": ["volume", "load", "sample", "MRHead", "SampleData", "scalar volume", "demo"],
+      "usage": "Run inside Slicer Python environment (headless or GUI)",
+      "slicer_version": "5.10+",
+      "verified": "2026-03-04"
+    },
+    {
+      "id": "visualization/enable-volume-rendering",
+      "file": "visualization/enable-volume-rendering.py",
+      "category": "visualization",
+      "description": "Enable volume rendering on a loaded scalar volume with a named preset (MR-Default, CT-Bone, etc.)",
+      "tags": ["volume rendering", "render", "3D", "preset", "MR-Default", "CT-Bone", "CT-Chest", "MR-MIP", "vtkMRMLVolumeRenderingDisplayNode"],
+      "usage": "Run inside Slicer Python environment; requires a loaded volume node",
+      "slicer_version": "5.10+",
+      "verified": "2026-03-04"
+    },
+    {
+      "id": "visualization/capture-3d-screenshot",
+      "file": "visualization/capture-3d-screenshot.py",
+      "category": "visualization",
+      "description": "Capture and save the 3D view widget as a PNG screenshot",
+      "tags": ["screenshot", "capture", "render", "3D view", "PNG", "image", "save", "Qt grab"],
+      "usage": "Run inside Slicer Python environment; pass output_path to set destination",
+      "slicer_version": "5.10+",
+      "verified": "2026-03-04"
+    },
+    {
+      "id": "automation/run-slicer-script",
+      "file": "automation/run-slicer-script.sh",
+      "category": "automation",
+      "description": "Shell launcher: run a Python script in Slicer with optional GUI or headless mode",
+      "tags": ["launch", "headless", "batch", "shell", "automation", "CLI", "--python-script", "no-main-window"],
+      "usage": "./run-slicer-script.sh <script.py> [--headless]; set SLICER_BIN at top of file",
+      "slicer_version": "5.10+",
+      "verified": "2026-03-04"
+    }
+  ]
+}
