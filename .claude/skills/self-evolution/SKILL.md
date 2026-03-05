@@ -206,6 +206,22 @@ volumeNode = slicer.util.loadVolume("/path/to/file.nrrd")
 
 ---
 
+## Lessons
+
+Non-tool-specific experience (bugs, API traps, pitfalls) that don't fit as a
+runnable script lives in `.claude/skills/self-evolution/lessons/`.
+
+When you discover something worth remembering that isn't a reusable script —
+save a `.md` file there. Use it as a reference before repeating past mistakes.
+
+Current lessons:
+
+| File | Topic |
+|------|-------|
+| `lessons/slicer-restart-loop-pitfall.md` | `slicer.app.restart()` causes infinite loop when `--python-script` is reused |
+
+---
+
 ## Explicit Trigger
 
 You can also manually request self-evolution:

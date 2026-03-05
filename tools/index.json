@@ -43,6 +43,26 @@
       "verified": "2026-03-04"
     },
     {
+      "id": "scene/fiducial-registration",
+      "file": "scene/fiducial-registration.py",
+      "category": "scene",
+      "description": "Register two fiducial point sets using SlicerIGT FiducialRegistrationWizard; returns 4x4 rigid transform and RMS error",
+      "tags": ["fiducial", "registration", "IGT", "FiducialRegistrationWizard", "transform", "RMS", "error", "SlicerIGT", "rigid"],
+      "usage": "Requires SlicerIGT installed; call run_fiducial_registration(nodeA, nodeB)",
+      "slicer_version": "5.10+",
+      "verified": "2026-03-04"
+    },
+    {
+      "id": "automation/install-extension",
+      "file": "automation/install-extension.py",
+      "category": "automation",
+      "description": "Install Slicer extensions via built-in extension manager wizard; auto-restarts Slicer when done",
+      "tags": ["extension", "install", "wizard", "extensionsManagerModel", "SlicerIGT", "restart", "GUI"],
+      "usage": "Edit EXTENSIONS_TO_INSTALL list then run in GUI mode: DISPLAY=:1 Slicer --python-script install-extension.py",
+      "slicer_version": "5.10+",
+      "verified": "2026-03-04"
+    },
+    {
       "id": "automation/run-slicer-script",
       "file": "automation/run-slicer-script.sh",
       "category": "automation",

@@ -34,6 +34,7 @@ tools/
 | File | Tags | Description |
 |------|------|-------------|
 | `list-mrml-nodes.py` | mrml, nodes, inspect, debug | List all MRML nodes (index, class, name) in current scene |
+| `fiducial-registration.py` | fiducial, registration, IGT, transform, RMS | Register two fiducial sets via SlicerIGT; returns 4x4 transform + RMS error |
 
 ## volumes/
 
@@ -65,12 +66,13 @@ tools/
 | File | Tags | Description |
 |------|------|-------------|
 | `run-slicer-script.sh` | launch, headless, batch, CLI | Launch Slicer with a Python script (GUI or headless) |
+| `install-extension.py` | extension, install, wizard, restart | Install extensions via built-in wizard; auto-restarts Slicer |
 
 ## snippets/
 
 | File | Contents |
 |------|----------|
-| *(empty)* | |
+| `automation.md` | Restart loop prevention (flag file), two-phase pattern, extensionsManagerModel GUI-only guard |
 
 ---
 
@@ -82,6 +84,9 @@ tools/
 | `volRenLogic.CreateDefaultVolumeRenderingDisplayNode()` | `volRenLogic.CreateVolumeRenderingDisplayNode()` |
 | `volRenLogic.ApplyPreset(displayNode, presetNode)` | `displayNode.GetVolumePropertyNode().Copy(presetNode)` |
 | `--python-code` flag | `--python-script <file>` (code flag unreliable) |
+| `extensionsManagerModel()` in headless | GUI mode only — blocks forever in `--no-main-window` |
+| `logic.UpdateCalibration(nodeA, nodeB, t, mode, rms)` | `logic.UpdateCalibration(wizardNode)` — takes ONE wizard node |
+| Manual `.tar.gz` extraction for extensions | Use `extensionsManagerModel.downloadAndInstallExtensionByName()` |
 
 ---
 
