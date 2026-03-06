@@ -12,6 +12,7 @@ __pycache__/
 .venv/
 venv/
 env/
+sat-env/
 *.egg-info/
 dist/
 build/
@@ -28,3 +29,25 @@ Thumbs.db
 
 # Generated database (rebuilt from index.json)
 tools/tools.db
+
+# Segmentation module — large runtime dependencies (not source code)
+# Python virtual environment for SAT inference (7+ GB)
+modules/Segmentation/sat-env/
+# SAT third-party repo — cloned separately, has its own git history
+modules/Segmentation/SAT/
+# Model checkpoints — downloaded from HuggingFace, not versioned here
+modules/Segmentation/checkpoints/
+
+# Medical image files (large binary volumes and masks)
+*.nii
+*.nii.gz
+*.dcm
+*.mha
+*.mhd
+*.nrrd
+
+# ML model weight files
+*.pth
+*.pt
+*.safetensors
+*.bin

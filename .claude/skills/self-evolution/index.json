@@ -1,0 +1,24 @@
+{
+  "version": "1.0",
+  "description": "Compact index of all lessons under .claude/skills/self-evolution/lessons/. Read this file at the start of any task to know what pitfalls and hard-won knowledge exist. Fetch individual lesson files only when the topic is relevant.",
+  "lessons": [
+    {
+      "id": "slicer-restart-loop-pitfall",
+      "file": "lessons/slicer-restart-loop-pitfall.md",
+      "description": "slicer.app.restart() with --python-script re-runs the same script, causing an infinite restart loop; fix with a flag file written BEFORE calling restart()",
+      "tags": ["restart", "loop", "infinite loop", "flag file", "slicer.app.restart", "python-script", "automation"]
+    },
+    {
+      "id": "sat-python-env-setup",
+      "file": "lessons/sat-python-env-setup.md",
+      "description": "SAT inference env: cu128 PyTorch for RTX 5090 sm_120 Blackwell, numpy<2.0 pin for MONAI 1.1.0, DDP identity wrapper for single-GPU, torch.load weights_only=False patch, HuggingFace URL bug workaround, SAT JSONL input format and checkpoint layout",
+      "tags": ["SAT", "PyTorch", "cu128", "RTX 5090", "sm_120", "Blackwell", "numpy", "MONAI", "DDP", "NCCL", "torch.load", "HuggingFace", "BioLORD", "inference", "venv", "uv"]
+    }
+    ,{
+      "id": "sat-server-integration",
+      "file": "lessons/sat-server-integration.md",
+      "description": "Phase 3+4 bugs: missing --text_encoder ours causes KeyError; JSONL in out_dir causes SameFileError; Slicer NIfTI export with saveNode; loadLabelVolume for mask import; start_server.sh must cd to Segmentation/ for imports",
+      "tags": ["SAT", "Flask", "server", "sat_inference", "text_encoder", "SameFileError", "JSONL", "NIfTI", "labelmap", "saveNode", "loadLabelVolume", "Slicer", "Phase3", "Phase4"]
+    }
+  ]
+}

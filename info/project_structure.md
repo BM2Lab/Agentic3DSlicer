@@ -1,8 +1,9 @@
 # Project Structure
 ```
 Agentic3DSlicer/
-├── .claude/                    # Claude/IDE config (empty)
-├── tools/                      # Project tools (empty)
+├── .claude/                    # Claude/IDE config 
+├── tools/                      # Project tools 
+├── modules/                    # External packages and projects 
 ├── Claude.md                   # This file — project context for the agent
 └── Slicer-5.10.0-linux-amd64/  # 3D Slicer 5.10 installation
     ├── bin/                    # Executables and bundled Python (slicer, qt, ctk, etc.)

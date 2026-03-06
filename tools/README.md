@@ -67,12 +67,14 @@ tools/
 |------|------|-------------|
 | `run-slicer-script.sh` | launch, headless, batch, CLI | Launch Slicer with a Python script (GUI or headless) |
 | `install-extension.py` | extension, install, wizard, restart | Install extensions via built-in wizard; auto-restarts Slicer |
+| `check-module-registered.py` | module, registration, verify, headless | Check if a named scripted module registered; prints SUCCESS/FAIL |
+| `screenshot-module.py` | screenshot, module, UI, verify, PNG | Switch to a module and grab the main window as a PNG |
 
 ## snippets/
 
-| File | Contents |
-|------|----------|
-| `automation.md` | Restart loop prevention (flag file), two-phase pattern, extensionsManagerModel GUI-only guard |
+| File | Tags | Description |
+|------|------|-------------|
+| `slicer-automation-patterns.md` | restart, loop, module registration, revisionUserSettings, headless | Restart loop guard, two-phase script, permanent module registration, extensionsManagerModel headless pitfall |
 
 ---
 
@@ -86,6 +88,7 @@ tools/
 | `--python-code` flag | `--python-script <file>` (code flag unreliable) |
 | `extensionsManagerModel()` in headless | GUI mode only — blocks forever in `--no-main-window` |
 | `logic.UpdateCalibration(nodeA, nodeB, t, mode, rms)` | `logic.UpdateCalibration(wizardNode)` — takes ONE wizard node |
+| `factoryManager().registeredModuleCount()` | `factoryManager().registeredModuleNames()` — count method doesn't exist |
 | Manual `.tar.gz` extraction for extensions | Use `extensionsManagerModel.downloadAndInstallExtensionByName()` |
 
 ---

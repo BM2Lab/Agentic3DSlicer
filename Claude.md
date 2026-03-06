@@ -41,5 +41,17 @@ After completing any non-trivial 3D Slicer task, save reusable code to `tools/` 
 
 See `tools/index.json` for the full tool index and `tools/ROADMAP.md` for the infrastructure plan.
 
+## Lessons (Accumulated Knowledge)
+
+**At the start of every task, read `.claude/skills/self-evolution/index.json`.** It is a compact file (~1 KB) listing all known pitfalls and hard-won lessons. Reading it costs almost nothing and prevents repeating past mistakes.
+
+When you **add a new lesson**:
+1. Save `.md` to `.claude/skills/self-evolution/lessons/`
+2. Add an entry to `.claude/skills/self-evolution/index.json`
+3. If the lesson belongs to a sub-project that has an `agent/` subfolder, **also copy the file there** — long tasks lose global context, but a local copy in `agent/` stays discoverable:
+   ```bash
+   cp .claude/skills/self-evolution/lessons/<lesson>.md modules/<Module>/agent/<lesson>.md
+   ```
+
 # User inquery
 The user will frequently ask you to achieve certain functions during which you can look into [goal](./info/goal.md) to review and update the goals. That can remind you of the previous attempt and capabilities.

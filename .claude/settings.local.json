@@ -1,9 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Bash(/home/chen-lab/letian/Agentic3DSlicer/Slicer-5.10.0-linux-amd64/Slicer:*)",
-      "Bash(echo:*)",
-      "Bash(pkill:*)"
+      "Bash(*)"
     ]
   }
 }

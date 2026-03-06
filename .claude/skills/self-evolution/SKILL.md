@@ -211,14 +211,13 @@ volumeNode = slicer.util.loadVolume("/path/to/file.nrrd")
 Non-tool-specific experience (bugs, API traps, pitfalls) that don't fit as a
 runnable script lives in `.claude/skills/self-evolution/lessons/`.
 
-When you discover something worth remembering that isn't a reusable script —
-save a `.md` file there. Use it as a reference before repeating past mistakes.
+When you discover something worth remembering that isn't a reusable script:
 
-Current lessons:
+1. Save a `.md` file in `lessons/`
+2. Add an entry to `.claude/skills/self-evolution/index.json`
+3. If the lesson belongs to a sub-project with an `agent/` folder, copy it there too
 
-| File | Topic |
-|------|-------|
-| `lessons/slicer-restart-loop-pitfall.md` | `slicer.app.restart()` causes infinite loop when `--python-script` is reused |
+The full lesson index, current lesson list, and project-local copy rules are in `Claude.md`.
 
 ---
 

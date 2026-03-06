@@ -71,6 +71,36 @@
       "usage": "./run-slicer-script.sh <script.py> [--headless]; set SLICER_BIN at top of file",
       "slicer_version": "5.10+",
       "verified": "2026-03-04"
+    },
+    {
+      "id": "automation/check-module-registered",
+      "file": "automation/check-module-registered.py",
+      "category": "automation",
+      "description": "Verify a named scripted module was registered by Slicer's factory manager; prints SUCCESS/FAIL",
+      "tags": ["module", "registration", "scripted module", "factory", "verify", "check", "headless"],
+      "usage": "Set MODULE_NAME, run headless: DISPLAY=:1 Slicer --additional-module-paths /path --no-main-window --python-script check-module-registered.py",
+      "slicer_version": "5.10+",
+      "verified": "2026-03-05"
+    },
+    {
+      "id": "automation/screenshot-module",
+      "file": "automation/screenshot-module.py",
+      "category": "automation",
+      "description": "Switch to a named Slicer module and capture the main window as a PNG for UI verification",
+      "tags": ["screenshot", "module", "UI", "verify", "render", "PNG", "grab", "scripted module"],
+      "usage": "Set MODULE_NAME and OUTPUT_PATH, run with GUI: DISPLAY=:1 Slicer --additional-module-paths /path --python-script screenshot-module.py",
+      "slicer_version": "5.10+",
+      "verified": "2026-03-05"
+    },
+    {
+      "id": "snippets/slicer-automation-patterns",
+      "file": "snippets/slicer-automation-patterns.md",
+      "category": "snippets",
+      "description": "Slicer automation patterns: restart loop guard, two-phase script, permanent module registration via revisionUserSettings, extensionsManagerModel headless hang",
+      "tags": ["restart", "loop", "flag file", "two-phase", "module registration", "revisionUserSettings", "extensionsManagerModel", "headless", "automation", "persistent"],
+      "usage": "Reference while writing any Slicer automation, installation, or module registration script",
+      "slicer_version": "5.10+",
+      "verified": "2026-03-05"
     }
   ]
 }
