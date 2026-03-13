@@ -93,6 +93,36 @@
       "verified": "2026-03-05"
     },
     {
+      "id": "visualization/rotate-3d-view",
+      "file": "visualization/rotate-3d-view.py",
+      "category": "visualization",
+      "description": "Rotate the 3D view: step (rotate_step), animated (rotate_animated), standard-view snap with VTK screenshot (rotate_to_standard_views). Includes vtk_screenshot() for headless PNG capture.",
+      "tags": ["rotation", "3D view", "yaw", "pitch", "roll", "YawLeft", "YawRight", "rotateToViewAxis", "camera", "orbit", "animate", "screenshot", "vtk", "headless", "Xvfb", "vtkWindowToImageFilter"],
+      "usage": "Load via importlib (hyphen in filename). Call rotate_step(), rotate_animated(), rotate_to_standard_views(), or vtk_screenshot(). See file header for details.",
+      "slicer_version": "5.10+",
+      "verified": "2026-03-06"
+    },
+    {
+      "id": "automation/slicer-ipc-bootstrap",
+      "file": "automation/slicer-ipc-bootstrap.py",
+      "category": "automation",
+      "description": "Bootstrap injected into Slicer via --python-script: starts a Unix socket RPC server + Qt keepalive so an external process can exec Python inside a running Slicer and read results.",
+      "tags": ["IPC", "unix socket", "bridge", "RPC", "exec", "remote control", "headless", "keepalive", "PythonQt", "daemon thread", "persistent", "bootstrap"],
+      "usage": "SLICER_SOCK=/tmp/slicer_agent.sock Slicer --python-script slicer-ipc-bootstrap.py --no-splash --no-main-window",
+      "slicer_version": "5.10+",
+      "verified": "2026-03-12"
+    },
+    {
+      "id": "automation/slicer-ipc-client-poc",
+      "file": "automation/slicer-ipc-client-poc.py",
+      "category": "automation",
+      "description": "Minimal PoC client that launches Slicer headless, connects to the Unix socket bridge, and verifies 4 RPC operations (version, scene query, persistent state, stdout capture).",
+      "tags": ["IPC", "unix socket", "bridge", "RPC", "client", "PoC", "test", "remote control", "headless"],
+      "usage": "Set SLICER_BIN at top of file, then: python3 slicer-ipc-client-poc.py",
+      "slicer_version": "5.10+",
+      "verified": "2026-03-12"
+    },
+    {
       "id": "snippets/slicer-automation-patterns",
       "file": "snippets/slicer-automation-patterns.md",
       "category": "snippets",

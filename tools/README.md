@@ -69,6 +69,8 @@ tools/
 | `install-extension.py` | extension, install, wizard, restart | Install extensions via built-in wizard; auto-restarts Slicer |
 | `check-module-registered.py` | module, registration, verify, headless | Check if a named scripted module registered; prints SUCCESS/FAIL |
 | `screenshot-module.py` | screenshot, module, UI, verify, PNG | Switch to a module and grab the main window as a PNG |
+| `slicer-ipc-bootstrap.py` | IPC, unix socket, bridge, RPC, keepalive, remote control | Bootstrap for Slicer: starts Unix socket RPC server + Qt keepalive; inject via --python-script |
+| `slicer-ipc-client-poc.py` | IPC, unix socket, bridge, RPC, client, PoC | External client PoC: launches Slicer, connects to socket bridge, verifies 4 RPC ops |
 
 ## snippets/
 

@@ -1,0 +1,57 @@
+[
+  {
+    "namespace": "crop",
+    "description": "Volume cropping to ROI or auto-detected bounding box",
+    "action_count": 2
+  },
+  {
+    "namespace": "histogram",
+    "description": "Intensity histogram, point sampling, Otsu threshold, masked stats",
+    "action_count": 4
+  },
+  {
+    "namespace": "io",
+    "description": "DICOM import, scene save/clear, generic node listing",
+    "action_count": 4
+  },
+  {
+    "namespace": "markup",
+    "description": "Fiducial points, ROIs, markup load/save",
+    "action_count": 7
+  },
+  {
+    "namespace": "model",
+    "description": "3D surface models: load, export, stats, display",
+    "action_count": 5
+  },
+  {
+    "namespace": "scene",
+    "description": "MRML scene inspection and snapshots",
+    "action_count": 2
+  },
+  {
+    "namespace": "segment_editor",
+    "description": "Headless-safe segment editing: islands, smooth, threshold, margin, hollow",
+    "action_count": 5
+  },
+  {
+    "namespace": "segmentation",
+    "description": "Create, threshold, export, and import segmentations",
+    "action_count": 7
+  },
+  {
+    "namespace": "transform",
+    "description": "Linear transforms: create, apply, harden, read, load",
+    "action_count": 5
+  },
+  {
+    "namespace": "visualization",
+    "description": "Layout, screenshots, volume rendering, camera rotation",
+    "action_count": 4
+  },
+  {
+    "namespace": "volume",
+    "description": "Volume loading, resampling, conversion, export",
+    "action_count": 8
+  }
+]
