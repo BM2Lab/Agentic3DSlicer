@@ -40,12 +40,16 @@ class SlicerSession:
         slicer_bin: str,
         bootstrap_path: str | None = None,
         sock_path: str = "/tmp/slicer_agent.sock",
+        push_sock_path: str = "/tmp/slicer_agent_push.sock",
+        push_log_path: str = "/tmp/slicer_push.jsonl",
         startup_timeout: float = 60.0,
         no_main_window: bool = True,
     ):
         self.slicer_bin = slicer_bin
         self.bootstrap_path = Path(bootstrap_path or _DEFAULT_BOOTSTRAP)
         self.sock_path = sock_path
+        self.push_sock_path = push_sock_path
+        self.push_log_path = push_log_path
         self.startup_timeout = startup_timeout
         self.no_main_window = no_main_window
         self._proc: subprocess.Popen | None = None
@@ -61,6 +65,8 @@ class SlicerSession:
         env = {
             **os.environ,
             "SLICER_SOCK": self.sock_path,
+            "SLICER_PUSH_SOCK": self.push_sock_path,
+            "SLICER_PUSH_LOG": self.push_log_path,
             "SLICER_BOOTSTRAP_LOG": "/tmp/slicer_bootstrap.log",
             # Forward display vars for headless X11 (no-op if already set)
             "DISPLAY": os.environ.get("DISPLAY", ":1"),

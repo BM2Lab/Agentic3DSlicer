@@ -24,6 +24,16 @@ The pipeline: a Flask inference server wraps [SAT-Nano](https://github.com/zhaoz
 
 ---
 
+### M2 — Bridge: General-Purpose Slicer Control (2026-03-07)
+
+A reusable Bridge layer lets LLM agents control a live 3D Slicer process through a Unix socket, with more than 50 high-level actions organised into namespaces (`volume`, `segmentation`, `visualization`, etc.).
+
+The agent can start Slicer, discover the full action registry via a generated `registry.json`, stream live events over a push socket, and tail a persisted JSONL log of VTK/Python/MRML messages for debugging.
+
+→ Full details: [`modules/Bridge/USAGE.md`](modules/Bridge/USAGE.md)
+
+---
+
 ## Structure
 
 ```

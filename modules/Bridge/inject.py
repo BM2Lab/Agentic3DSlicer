@@ -20,6 +20,14 @@ Examples:
   # List available actions:
   python3 inject.py --list
   python3 inject.py --list volume
+
+  # Watch push events from Slicer in real time (Ctrl-C to stop):
+  python3 inject.py --watch
+
+  # Tail persisted push log (jsonl) instead of live socket:
+  python3 inject.py --log            # last 20 events
+  python3 inject.py --log 50         # last 50 events
+  python3 inject.py --log 50 --filter vtk_warning
 """
 import ast
 import json
@@ -27,8 +35,12 @@ import socket
 import sys
 import uuid
 from pathlib import Path
+import datetime
+import os
 
 SOCK_PATH = "/tmp/slicer_agent.sock"
+PUSH_SOCK_PATH = "/tmp/slicer_agent_push.sock"
+PUSH_LOG_PATH = os.environ.get("SLICER_PUSH_LOG", "/tmp/slicer_push.jsonl")
 sys.path.insert(0, str(Path(__file__).parent))
 
 import slicer_use.actions  # noqa: E402  — triggers all registrations
@@ -86,14 +98,104 @@ def print_list(namespace_filter: str | None = None):
         print(f"  Available: {controller.namespace_names}")
 
 
+_EVENT_COLORS = {
+    "vtk_warning":  "\033[33m",   # yellow
+    "vtk_error":    "\033[31m",   # red
+    "vtk_text":     "\033[0m",    # default
+    "python_error": "\033[31;1m", # bold red
+    "stdout":       "\033[36m",   # cyan
+    "mrml_event":   "\033[32m",   # green
+}
+_RESET = "\033[0m"
+
+
+def watch_push(push_sock_path: str = PUSH_SOCK_PATH):
+    """Connect to push socket and print events as they arrive."""
+    from slicer_use.slicer.push_listener import PushListener
+    print(f"Watching push events from {push_sock_path} (Ctrl-C to stop)…", flush=True)
+    try:
+        with PushListener(push_sock_path) as pl:
+            for event in pl.events():
+                ts = datetime.datetime.fromtimestamp(event.get("ts", 0)).strftime("%H:%M:%S.%f")[:-3]
+                kind = event.get("type", "unknown")
+                color = _EVENT_COLORS.get(kind, "")
+                if kind == "mrml_event":
+                    text = f"{event.get('event')} {event.get('node_class')} {event.get('node_id')} {event.get('node_name', '')}"
+                else:
+                    text = event.get("text", "").strip()
+                print(f"{color}[{ts}] {kind}: {text}{_RESET}", flush=True)
+    except FileNotFoundError:
+        print("ERROR: No Slicer push socket found. Run start_slicer.py first.")
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print("\nStopped.")
+
+
+def tail_log(n: int = 20, type_filter: str | None = None, path: str = PUSH_LOG_PATH):
+    """Tail last N events from the persistent jsonl push log."""
+    try:
+        with open(path, "r") as f:
+            lines = f.readlines()
+    except FileNotFoundError:
+        print(f"ERROR: No push log found at {path!r}. Make sure SLICER_PUSH_LOG is set and Slicer has run.")
+        sys.exit(1)
+
+    if not lines:
+        print(f"(log {path!r} is empty)")
+        return
+
+    lines = lines[-n:]
+    for line in lines:
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        kind = event.get("type", "unknown")
+        if type_filter and kind != type_filter:
+            continue
+        ts = datetime.datetime.fromtimestamp(event.get("ts", 0)).strftime("%H:%M:%S.%f")[:-3]
+        color = _EVENT_COLORS.get(kind, "")
+        if kind == "mrml_event":
+            text = f"{event.get('event')} {event.get('node_class')} {event.get('node_id')} {event.get('node_name', '')}"
+        else:
+            text = event.get("text", "").strip()
+        print(f"{color}[{ts}] {kind}: {text}{_RESET}")
+
+
 def main():
     if len(sys.argv) < 2:
         print(__doc__)
         sys.exit(0)
 
+    if sys.argv[1] == "--watch":
+        watch_push()
+        sys.exit(0)
+
     if sys.argv[1] == "--list":
         ns_filter = sys.argv[2] if len(sys.argv) > 2 else None
         print_list(ns_filter)
+        sys.exit(0)
+
+    if sys.argv[1] == "--log":
+        # Syntax: --log [N] [--filter TYPE]
+        n = 20
+        type_filter = None
+        args = sys.argv[2:]
+        i = 0
+        while i < len(args):
+            a = args[i]
+            if a == "--filter" and i + 1 < len(args):
+                type_filter = args[i + 1]
+                i += 2
+            elif a.isdigit():
+                n = int(a)
+                i += 1
+            else:
+                i += 1
+        tail_log(n=n, type_filter=type_filter)
         sys.exit(0)
 
     # Parse action name: either "ns.action" or "ns action"

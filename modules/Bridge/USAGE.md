@@ -73,7 +73,44 @@ Or just use depth `-1` if token budget is not a concern (~300 lines for 52 actio
 
 ---
 
-## 3. Call actions
+## 3. Live vs. persisted push events
+
+Bridge supports **two ways** to observe events from Slicer:
+
+- **Live stream** over the push socket (ephemeral, per-session)
+- **Persisted log** on disk (`SLICER_PUSH_LOG`, default `/tmp/slicer_push.jsonl`)
+
+### Live stream (socket)
+
+```bash
+python3 inject.py --watch
+```
+
+This uses `push_listener.py` to connect to the Unix push socket and prints events as they arrive (VTK warnings/errors, Python tracebacks, MRML events, stdout). Output is coloured and stops when you hit Ctrl+C.
+
+### Persistent log (jsonl)
+
+`bootstrap.py` appends **every** push event to a JSON Lines log file:
+
+- Env var: `SLICER_PUSH_LOG` (default: `/tmp/slicer_push.jsonl`)
+- Format: one JSON object per line with at least `type`, `ts`, and either `text` or MRML fields.
+
+You can tail this log via `inject.py`:
+
+```bash
+python3 inject.py --log              # last 20 events
+python3 inject.py --log 50           # last 50 events
+python3 inject.py --log 50 --filter vtk_warning
+```
+
+- `--log [N]` tails the last N events (default 20)
+- `--filter TYPE` only shows events with the matching `type` (e.g. `vtk_warning`, `vtk_error`, `python_error`, `mrml_event`, `stdout`)
+
+This is ideal for **LLM agents** and post-mortem debugging, because the log persists across `--watch` sessions and even across Claude sessions as long as the file is not deleted.
+
+---
+
+## 4. Call actions
 
 ### From the CLI (human-in-the-loop)
 
@@ -110,7 +147,7 @@ async def main():
 
 ---
 
-## 4. Namespace reference
+## 5. Namespace reference
 
 | Namespace | Description | Actions |
 |-----------|-------------|---------|
@@ -130,7 +167,7 @@ async def main():
 
 ---
 
-## 5. Adding a new action
+## 6. Adding a new action
 
 1. Choose or create a file in `slicer_use/actions/` (one file per namespace).
 
@@ -164,7 +201,7 @@ That's it — no hardcoded maps, no separate registration step. The `@ns.action`
 
 ---
 
-## 6. Architecture notes
+## 7. Architecture notes
 
 - **Single global controller:** `slicer_use/controller/service.py` exports a module-level `controller` singleton. All action modules import it and register into the same registry.
 

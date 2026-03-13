@@ -10,11 +10,13 @@ Run:
 import os, socket, subprocess, sys, time
 from pathlib import Path
 
-ROOT        = Path(__file__).parent.parent.parent
-SLICER_BIN  = str(ROOT / "Slicer-5.10.0-linux-amd64/Slicer")
-BOOTSTRAP   = str(Path(__file__).parent / "slicer_use/slicer/bootstrap.py")
-SOCK_PATH   = "/tmp/slicer_agent.sock"
-TIMEOUT     = 120.0
+ROOT           = Path(__file__).parent.parent.parent
+SLICER_BIN     = str(ROOT / "Slicer-5.10.0-linux-amd64/Slicer")
+BOOTSTRAP      = str(Path(__file__).parent / "slicer_use/slicer/bootstrap.py")
+SOCK_PATH      = "/tmp/slicer_agent.sock"
+PUSH_SOCK_PATH = "/tmp/slicer_agent_push.sock"
+PUSH_LOG_PATH  = "/tmp/slicer_push.jsonl"
+TIMEOUT        = 120.0
 
 if os.path.exists(SOCK_PATH):
     os.remove(SOCK_PATH)
@@ -22,8 +24,13 @@ if os.path.exists(SOCK_PATH):
 print("Starting Slicer (GUI mode)…")
 subprocess.Popen(
     [SLICER_BIN, "--python-script", BOOTSTRAP, "--no-splash"],
-    env={**os.environ, "SLICER_SOCK": SOCK_PATH,
-         "SLICER_BOOTSTRAP_LOG": "/tmp/slicer_bootstrap.log"},
+    env={
+        **os.environ,
+        "SLICER_SOCK": SOCK_PATH,
+        "SLICER_PUSH_SOCK": PUSH_SOCK_PATH,
+        "SLICER_PUSH_LOG": PUSH_LOG_PATH,
+        "SLICER_BOOTSTRAP_LOG": "/tmp/slicer_bootstrap.log",
+    },
 )
 
 # Wait for socket to appear
