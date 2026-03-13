@@ -156,64 +156,40 @@ Unix socket IPC proven: 4/4 RPC tests pass (version, scene query, persistent glo
 `bootstrap.py` `capturing_exec` now intercepts VTK output window, forwards in `stdout` response field,
 and re-emits through original output window to preserve Python interactor colors.
 
-### Phase 3 — Bidirectional Messaging: Push Socket + Permanent VTK Hook (NEXT)
+### ✓ Phase 3 — Bidirectional Messaging: Push Socket + VTK Capture (COMPLETE, 2026-03-13)
 
-**Goal:** Slicer can push messages to the agent at any time, not just in response to injected actions.
+**Push socket:** `bootstrap.py` opens a second Unix socket (`/tmp/slicer_agent_push.sock`).
+All `push()` calls broadcast newline-delimited JSON to connected listeners and append to
+`/tmp/slicer_push.jsonl` for persistence.
 
-#### Part A — Permanent VTK output window hook
-Replace the temporary per-exec `vtkStringOutputWindow` swap with a permanent custom output window
-installed once at bootstrap startup. All VTK warnings/errors — including those triggered from the
-Python interactor — are forwarded through the push socket.
+**VTK capture:** `capturing_exec` swaps in `vtkStringOutputWindow` during exec, intercepts
+C++-triggered VTK output, forwards via `push()` as typed events (`vtk_warning`/`vtk_error`/`vtk_text`),
+and re-emits through the original output window to preserve Python interactor colors.
 
-```python
-# bootstrap.py — installed once at startup
-class _ForwardingOutputWindow(vtk.vtkOutputWindow):
-    def DisplayWarningText(self, text): push({"type": "vtk_warning", "text": text})
-    def DisplayErrorText(self, text):   push({"type": "vtk_error",   "text": text})
-    def DisplayText(self, text):        push({"type": "vtk_text",    "text": text})
-```
+**Note on permanent VTK hook:** Python subclass of `vtkOutputWindow` not called from C++ (virtual
+dispatch limitation). Per-exec swap is the correct approach for agent-triggered actions.
 
-#### Part B — Push socket (second Unix socket, Slicer → agent)
-Bootstrap opens a second socket (`SLICER_PUSH_SOCK`, default `/tmp/slicer_agent_push.sock`)
-as a server that the agent connects to for receiving async events.
+**Agent-side:** `push_listener.py` — sync/async/background-thread `PushListener`.
+`inject.py --watch` — live color-coded push event monitor.
+`inject.py --log [N] [--filter TYPE]` — tail persistent jsonl log.
 
 ```
-inject.py  →  /tmp/slicer_agent.sock       →  Slicer   (request/response, already exists)
-agent      ←  /tmp/slicer_agent_push.sock  ←  Slicer   (push, new)
+inject.py  →  /tmp/slicer_agent.sock       →  Slicer   (request/response)
+agent      ←  /tmp/slicer_agent_push.sock  ←  Slicer   (push, async)
+               /tmp/slicer_push.jsonl                   (persistent log)
 ```
 
-Protocol: newline-delimited JSON events pushed by Slicer, read by agent listener thread:
-```json
-{"type": "vtk_warning", "text": "...", "ts": 1234567890.123}
-{"type": "vtk_error",   "text": "...", "ts": ...}
-{"type": "mrml_event",  "event": "NodeAdded", "node_id": "...", "node_class": "...", "ts": ...}
-```
+### ✓ Phase 4 — Bidirectional Messaging: errorLogModel Observer (COMPLETE, 2026-03-13)
 
-**Files to add/modify:**
-- `slicer_use/slicer/bootstrap.py` — push socket server + permanent VTK hook
-- `slicer_use/slicer/push_listener.py` — agent-side async push listener
-- `inject.py` — optionally show push events in real time
+**Goal:** Agent receives ALL Slicer messages including Python interactor input/output.
 
-### Phase 4 — MRML Event Observers (reactive scene events)
+`bootstrap.py` installs a `rowsInserted` observer on `slicer.app.errorLogModel()` (deferred
+500ms via `QTimer.singleShot` to ensure event loop is ready). Columns: 2=Level, 3=Category, 4=Description.
+Pushes `log_warning`/`log_error`/`log_info`/`log_debug` events with level+category+text.
 
-**Goal:** Agent receives semantic scene-change notifications in real time.
-
-Install observers on `slicer.mrmlScene` in bootstrap. On node added/modified/removed,
-push a structured event through the push socket (Phase 3 transport).
-
-```python
-# bootstrap.py
-slicer.mrmlScene.AddObserver(slicer.mrmlScene.NodeAddedEvent,   _on_node_added)
-slicer.mrmlScene.AddObserver(slicer.mrmlScene.NodeRemovedEvent, _on_node_removed)
-```
-
-Event payload:
-```json
-{"type": "mrml_event", "event": "NodeAdded", "node_id": "vtkMRMLScalarVolumeNode1",
- "node_class": "vtkMRMLScalarVolumeNode", "node_name": "MRHead", "ts": ...}
-```
-
-Agent can use these to maintain an up-to-date scene model without polling `get_scene_state`.
+**Verified:** User typed `print("Hello Claude Code")` in Python interactor →
+agent received `log_debug: Python console user input: print("Hello Claude Code")` + `log_info: Hello Claude Code`.
+True bidirectional messaging confirmed.
 
 ### Phase 5 — Segmentation Action
 Wire SATSeg Flask server (port 1527) into `actions/segmentation.py: segment(labels, modality)`.

@@ -20,5 +20,11 @@
       "description": "Phase 3+4 bugs: missing --text_encoder ours causes KeyError; JSONL in out_dir causes SameFileError; Slicer NIfTI export with saveNode; loadLabelVolume for mask import; start_server.sh must cd to Segmentation/ for imports",
       "tags": ["SAT", "Flask", "server", "sat_inference", "text_encoder", "SameFileError", "JSONL", "NIfTI", "labelmap", "saveNode", "loadLabelVolume", "Slicer", "Phase3", "Phase4"]
     }
+    ,{
+      "id": "slicer-source-search-strategy",
+      "file": "lessons/slicer-source-search-strategy.md",
+      "description": "How to search Slicer/CTK source code: start at the C++ widget layer (CTK), not the Python script layer. ctkPythonConsole.cpp IS the Python interactor behavior. When find_files returns a .cpp/.h matching the concept, that's the answer. Layer model: ctkPythonConsole → qSlicerApplication → qSlicerPythonManager → slicerqt.py → .slicerrc.py.",
+      "tags": ["slicer", "ctk", "ctkPythonConsole", "python-interactor", "source-search", "widget", "code-navigation", "MCP", "code-index", "CodeGraphContext", "search-strategy"]
+    }
   ]
 }

@@ -6,8 +6,6 @@ You are tasked to build 3D Slicer infrastructure for LLM agent like you so that 
 
 # Information
 
-See [project_structure](./info/project_structure.md) for last stored project hierachy. Remember to update it so each initialization.
-
 See [resources](./info/resources.md) for 3D Slicer's online documentations. Remember to update it if you find something else.
 
 # Self-evolution
@@ -40,6 +38,18 @@ After completing any non-trivial 3D Slicer task, save reusable code to `tools/` 
 | `tools/snippets/` | Short code patterns in `.md` files |
 
 See `tools/index.json` for the full tool index and `tools/ROADMAP.md` for the infrastructure plan.
+
+## Code indexing (external MCP)
+
+When you need to understand or reference Slicer's own source code (C++/Python), prefer using a dedicated code-index MCP server instead of blindly reading large trees.
+
+- Assume a `code-index` MCP server is available (e.g. configured with `uvx code-index-mcp --project-path /path/to/Agentic3DSlicer` in the user’s global settings).
+- Use its tools to:
+  - **set_project_path** (if needed) to this repo
+  - **build or refresh the index** only when necessary
+  - **search_code_advanced / find_files / get_file_summary** to locate APIs and examples
+
+Always ask the code-index server for locations and summaries first, then open only the specific files you need. This keeps token usage low and ensures you’re grounded in the actual Slicer source when writing scripts and modules.
 
 ## Lessons (Accumulated Knowledge)
 

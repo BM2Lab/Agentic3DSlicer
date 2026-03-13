@@ -4,6 +4,9 @@ Slicer-*/
 # Project data (screenshots, volumes, outputs — not tracked)
 data/
 
+# Local Slicer source copy (for Slicer; not part of this repo)
+source_code/
+
 # Python
 __pycache__/
 *.py[cod]

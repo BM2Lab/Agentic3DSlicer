@@ -49,20 +49,6 @@ info/           project notes, goals, resources
 - [3D Slicer 5.10+](https://download.slicer.org) installed locally
 - Linux (tested on Ubuntu with Slicer 5.10.0-linux-amd64)
 
-## Using the tools
-
-Run a script inside Slicer:
-
-```bash
-./Slicer-5.10.0-linux-amd64/Slicer --python-script tools/volumes/load-sample-mrhead.py
-```
-
-Or headlessly (no GUI):
-
-```bash
-./Slicer-5.10.0-linux-amd64/Slicer --no-main-window --python-script tools/scene/list-mrml-nodes.py
-```
-
 ## Resources
 
 - [3D Slicer documentation](https://slicer.readthedocs.io/en/latest)
